@@ -38,11 +38,11 @@ $calculatorForm
 
     previousInput = input;
 
-    history.pushState(null, null, `#${encodeURIComponent(input)}`);
-
     $calculationResults.empty();
 
     addResults('Input', [input]);
+
+    history.pushState(null, null, `#${encodeURIComponent(input)}`);
   })
   .submit(() => {
     $calculatingIndicator.hide();
