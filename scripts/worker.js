@@ -1,27 +1,22 @@
-importScripts('functions.js');
+importScripts('third_party/algebrite.js');
 
 function compute(input) {
   let match;
   // Non-negative integer input
   if (match = input.match(/^(0|[1-9]\d*)$/)) {
-    const n = BigInt(match[1]);
+    const numberString = match[1];
+    const number = BigInt(numberString);
 
     // Input greater than 1
-    if (n > 1n) {
+    if (number > 1n) {
       // Prime factorization
-      const primeFactors = factor(n);
+      const factoredForm = String(Algebrite.factor(numberString))
+        .replaceAll('*', ' \\times ');
+      const isPrime = factoredForm === numberString;
       self.postMessage([
         'Prime factorization',
-        [
-          primeFactors
-            .map(([base, exponent]) => (
-              exponent === 1n ? base : `${base}^${exponent}`
-            ))
-            .join(' \\times '),
-        ],
-        [
-          primeFactors.length === 1 ? '&#160;(prime number)' : null
-        ],
+        [factoredForm],
+        [isPrime && '&nbsp;(prime number)'],
       ]);
     }
 
@@ -29,11 +24,11 @@ function compute(input) {
   }
   // Factorial
   else if (match = input.match(/^(0|[1-9]\d*)!$/)) {
-    const n = BigInt(match[1]);
-    const value = factorial(n);
+    const numberString = match[1];
+    const value = String(Algebrite.factorial(numberString));
     self.postMessage(['Result', [value]]);
 
-    compute(String(value));
+    compute(value);
   }
 }
 

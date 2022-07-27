@@ -27,7 +27,7 @@ $(() => {
         results.map((result, i) => (
           $('<p>').append(
             katex.renderToString(asciiMathParser.parse(String(result))),
-            notes != null && notes[i] != null
+            notes != null && notes[i] != null && notes[i] !== false
               ? [document.createTextNode(' '), $('<small>').html(notes[i])]
               : null,
           )
