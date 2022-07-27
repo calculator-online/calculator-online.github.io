@@ -48,7 +48,7 @@ function compute(originalInput, isFirstCall = true) {
   // Other mathematical expression
 
   input = input.replaceAll(/\*\*/g, '^');
-  input = input.replaceAll(/(?<!=)=(?!=)/g, '==');
+  input = input.replaceAll(/([^=])=(?!=)/g, '$1==');
   input = input.replaceAll(/\)\s*\(/g, ')*(');
 
   // Inserts a space between the factors written in juxaposition, such as "xyz",
