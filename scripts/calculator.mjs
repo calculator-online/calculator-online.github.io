@@ -3,7 +3,7 @@ import AsciiMathParser from './third_party/asciimath2tex.mjs';
 const asciiMathParser = new AsciiMathParser();
 
 const PROGRAM_NAME = document.title;
-const TIMEOUT = 5000;
+const TIMEOUT = 10000;
 
 $(() => {
 
