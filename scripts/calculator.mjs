@@ -3,7 +3,7 @@ import AsciiMathParser from './third_party/asciimath2tex.mjs';
 const asciiMathParser = new AsciiMathParser();
 
 const PROGRAM_NAME = document.title;
-const TIMEOUT = 10000;
+const TIMEOUT = 2000;
 
 $(() => {
   const $calculatorForm = $('#calculator-form');
@@ -21,7 +21,7 @@ $(() => {
         $('<h2>').text(`${heading}:`),
         results.map((result) => (
           $('<p>').append(
-            katex.renderToString(asciiMathParser.parse(result)),
+            katex.renderToString(asciiMathParser.parse(String(result))),
           )
         )),
       ),
@@ -29,6 +29,8 @@ $(() => {
   }
 
   let previousInput;
+  let worker;
+  let timer;
 
   $calculatorForm.submit((event) => {
     event.preventDefault();
@@ -45,33 +47,51 @@ $(() => {
     $throbber.show();
     $timeout.hide();
 
-    const worker = new Worker('scripts/worker.js');
+    if (worker) {
+      worker.terminate();
+    }
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    worker = new Worker('scripts/worker.js');
     worker.postMessage(input);
 
-    const timer = setTimeout(() => {
-      worker.terminate();
+    timer = setTimeout(() => {
       $throbber.hide();
       $timeout.show();
+
+      worker.terminate();
+      worker = null;
+
+      timer = null;
     }, TIMEOUT);
 
-    let isFirstResult = true;
+    let isFirstOutput = true;
 
     $(worker).on('message', (event) => {
-      if (isFirstResult) {
+      if (isFirstOutput) {
         addResults('Input', [input]);
-        isFirstResult = false;
+        isFirstOutput = false;
       }
 
-      const result = event.originalEvent.data;
+      const output = event.originalEvent.data;
 
-      // End of results
-      if (result === true) {
-        clearTimeout(timer);
+      // End of output
+      if (output === true) {
         $throbber.hide();
+
+        worker.terminate();
+        worker = null;
+
+        clearTimeout(timer);
+        timer = null;
+
         return;
       }
 
-      addResults(...result);
+      addResults(...output);
     });
 
     document.title = `${input} - ${PROGRAM_NAME}`;
