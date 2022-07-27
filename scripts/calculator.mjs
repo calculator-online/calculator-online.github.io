@@ -8,8 +8,8 @@ const TIMEOUT = 10000;
 $(() => {
   const $calculatorForm = $('#calculator-form');
   const $inputField = $('#input-field');
-  const $throbber = $('#throbber');
   const $results = $('#results');
+  const $throbber = $('#throbber');
   const $timeout = $('#timeout');
 
   $throbber.hide();
@@ -41,8 +41,8 @@ $(() => {
 
     previousInput = input;
 
-    $throbber.show();
     $results.empty();
+    $throbber.show();
     $timeout.hide();
 
     const worker = new Worker('scripts/worker.js');
