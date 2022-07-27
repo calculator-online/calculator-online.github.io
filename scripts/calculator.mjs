@@ -2,6 +2,7 @@ import AsciiMathParser from './third_party/asciimath2tex.mjs';
 
 const asciiMathParser = new AsciiMathParser();
 
+const DEBUG = true;
 const PROGRAM_NAME = document.title;
 const TIMEOUT = 2000;
 
@@ -15,13 +16,20 @@ $(() => {
   $throbber.hide();
   $timeout.hide();
 
-  function addResults(heading, results) {
+  function addResults(heading, results, notes) {
+    if (DEBUG) {
+      console.log('Results:', results);
+    }
+
     $results.append(
       $('<section>').append(
         $('<h2>').text(`${heading}:`),
-        results.map((result) => (
+        results.map((result, i) => (
           $('<p>').append(
             katex.renderToString(asciiMathParser.parse(String(result))),
+            notes != null && notes[i] != null
+              ? [document.createTextNode(' '), $('<small>').html(notes[i])]
+              : null,
           )
         )),
       ),
