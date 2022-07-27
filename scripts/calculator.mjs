@@ -4,7 +4,7 @@ const asciiMathParser = new AsciiMathParser();
 
 const DEBUG = true;
 const PROGRAM_NAME = document.title;
-const TIMEOUT = 2000;
+const TIMEOUT = 10000;
 
 $(() => {
   const $calculatorForm = $('#calculator-form');
