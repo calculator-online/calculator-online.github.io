@@ -1,4 +1,4 @@
-body, #calculation-results section h2, #input-field {
+body, #results section h2, #input-field {
   color: #222;
   font: normal 13px Arial, Helvetica, sans-serif;
 }
@@ -27,34 +27,58 @@ body {
   width: calc(100% - (58px - 24px));
 }
 
-#calculate-button {
-  background: url(data:image/svg+xml;base64,PHN2ZyBkYXRhLW5hbWU9IkxheWVyIDEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI0IDI0Ij48dGl0bGU+aW5wdXRfZXF1YWwuc3ZnPC90aXRsZT48cGF0aCBkPSJNMTkgMkg1YTMgMyAwIDAgMC0zIDN2MTRhMyAzIDAgMCAwIDMgM2gxNGEzIDMgMCAwIDAgMy0zVjVhMyAzIDAgMCAwLTMtM3ptLTIgMTNIN3YtMmgxMHptMC00SDdWOWgxMHoiIGZpbGw9IiNmYTY4MDAiLz48L3N2Zz4=); /* https://m.wolframalpha.com/images/input_equal.svg */
+#submit-button {
+  background: url(../images/input_equal.svg);
   border: 0;
   height: 24px;
   width: 24px;
 }
 
-#calculating-indicator {
+#throbber {
   display: none;
   margin-top: 30px;
   text-align: center;
 }
 
-#calculation-results {
+#results {
   padding: 0 16px 16px;
 }
 
-#calculation-results section {
+#results section {
   margin-top: 30px;
 }
 
-#calculation-results section h2 {
+#results section h2 {
   color: #77a5b6;
   font-size: 14px;
   font-weight: normal;
 }
 
-small {
+#results section small {
   color: #8e8e8e;
   font-size: 13px;
+}
+
+#timeout {
+  background: #fff6ec;
+  border: 1px solid #ff6c00;
+  border-radius: 8px;
+  box-shadow: 0 0 10px 0 rgb(199 199 199 / 50%), 0 0 1px 0 rgb(199 199 199 / 50%);
+  display: flex;
+  height: 69px;
+  margin: 18px 18px 0;
+  padding: 0 15px;
+}
+
+#timeout p {
+  background: url(../images/computation-time.png) no-repeat 0 0;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 700;
+  justify-content: center;
+  line-height: normal;
+  margin: auto 0;
+  min-height: 29px;
+  padding-left: 56px;
 }

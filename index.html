@@ -13,17 +13,20 @@
   <body>
     <form id="calculator-form">
       <input id="input-field" autocomplete="off">
-      <button id="calculate-button"></button>
+      <button id="submit-button" title="compute input"></button>
     </form>
-    <section id="calculating-indicator">
+    <section id="results"></section>
+    <section id="throbber">
       <p>
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/6/61/Flickr-inspired_Pulsar_Throbber.gif"
-          alt="Calculating..."
+          alt="Computing..."
           title="Flickr-inspired Pulsar Throbber by swilsonmc [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons https://commons.wikimedia.org/wiki/File:Flickr-inspired_Pulsar_Throbber.gif"
         >
       </p>
     </section>
-    <section id="calculation-results"></section>
+    <section id="timeout">
+      <p>Standard computation time exceeded...</p>
+    </section>
   </body>
 </html>

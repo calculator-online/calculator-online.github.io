@@ -2,15 +2,22 @@ import AsciiMathParser from './third_party/asciimath2tex.mjs';
 
 const asciiMathParser = new AsciiMathParser();
 
+const PROGRAM_NAME = document.title;
+const TIMEOUT = 5000;
+
 $(() => {
 
 const $calculatorForm = $('#calculator-form');
 const $inputField = $('#input-field');
-const $calculatingIndicator = $('#calculating-indicator');
-const $calculationResults = $('#calculation-results');
+const $throbber = $('#throbber');
+const $results = $('#results');
+const $timeout = $('#timeout');
+
+$throbber.hide();
+$timeout.hide();
 
 function addResults(heading, results) {
-  $calculationResults.append(
+  $results.append(
     $('<section>').append(
       $('<h2>').text(`${heading}:`),
       results.map((result) => (
@@ -24,29 +31,53 @@ function addResults(heading, results) {
 
 let previousInput;
 
-$calculatorForm
-  .submit((event) => {
-    event.preventDefault();
+$calculatorForm.submit((event) => {
+  event.preventDefault();
 
-    $calculatingIndicator.show();
+  const input = $inputField.val().trim();
 
-    const input = $inputField.val().trim();
+  if (input === '' || input === previousInput) {
+    return;
+  }
 
-    if (input === '' || input === previousInput) {
+  previousInput = input;
+
+  $throbber.show();
+  $results.empty();
+  $timeout.hide();
+
+  const worker = new Worker('scripts/worker.js');
+  worker.postMessage(input);
+
+  const timer = setTimeout(() => {
+    worker.terminate();
+    $throbber.hide();
+    $timeout.show();
+  }, TIMEOUT);
+
+  let isFirstResult = true;
+
+  $(worker).on('message', (event) => {
+    if (isFirstResult) {
+      addResults('Input', [input]);
+      isFirstResult = false;
+    }
+
+    const result = event.originalEvent.data;
+
+    // End of results
+    if (result === true) {
+      clearTimeout(timer);
+      $throbber.hide();
       return;
     }
 
-    previousInput = input;
-
-    $calculationResults.empty();
-
-    addResults('Input', [input]);
-
-    history.pushState(null, null, `#${encodeURIComponent(input)}`);
-  })
-  .submit(() => {
-    $calculatingIndicator.hide();
+    addResults(...result);
   });
+
+  document.title = `${input} - ${PROGRAM_NAME}`;
+  history.pushState(null, '', `#${encodeURIComponent(input)}`);
+});
 
 $(window).on('hashchange', () => {
   const input = location.hash.replace(/^#/, '');
