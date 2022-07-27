@@ -55,7 +55,8 @@ body {
 }
 
 #results section p {
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 #results section small {

@@ -23,7 +23,7 @@ $(() => {
 
     $results.append(
       $('<section>').append(
-        $('<h2>').text(`${heading}:`),
+        $('<h2>').text(`${heading}${results.length > 1 ? 's' : ''}:`),
         results.map((result, i) => (
           $('<p>').append(
             katex.renderToString(asciiMathParser.parse(String(result))),
@@ -44,11 +44,9 @@ $(() => {
     event.preventDefault();
 
     const input = $inputField.val().trim();
-
     if (input === '' || input === previousInput) {
       return;
     }
-
     previousInput = input;
 
     $results.empty();
@@ -63,7 +61,7 @@ $(() => {
       clearTimeout(timer);
     }
 
-    worker = new Worker('scripts/worker.js');
+    worker = new Worker('scripts/compute.js');
     worker.postMessage(input);
 
     timer = setTimeout(() => {
@@ -76,14 +74,7 @@ $(() => {
       timer = null;
     }, TIMEOUT);
 
-    let isFirstOutput = true;
-
     $(worker).on('message', (event) => {
-      if (isFirstOutput) {
-        addResults('Input', [input]);
-        isFirstOutput = false;
-      }
-
       const output = event.originalEvent.data;
 
       // End of output
