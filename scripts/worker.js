@@ -15,7 +15,7 @@ self.addEventListener('message', (event) => {
   let match;
 
   // Factorial
-  if (match = input.match(/^(\d+)!$/)) {
+  if (match = input.match(/^(0|[1-9]\d*)!$/)) {
     const n = BigInt(match[1]);
     const value = factorial(n);
     self.postMessage(['Result', [value]]);
