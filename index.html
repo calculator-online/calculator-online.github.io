@@ -62,7 +62,7 @@
           const factors = factor(result);
           const output = Object
             .entries(factors)
-            .map(([base, exponent]) => `${base}${exponent > 1n ? `**${exponent}` : ''}`)
+            .map(([base, exponent]) => `${base}${exponent > 1n ? `^${exponent}` : ''}`)
             .join(' × ');
 
           addOutput(
