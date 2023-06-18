@@ -1,3 +1,3 @@
-# calculator-beta.github.io
+# Calculator
 
-Free software replacement for Wolfram Alpha that works offline
+

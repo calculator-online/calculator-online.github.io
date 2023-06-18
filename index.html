@@ -1,32 +1,161 @@
 <!DOCTYPE html>
 <html lang="en-US">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculator</title>
-    <link rel="stylesheet" href="styles/third_party/katex.css">
-    <link rel="stylesheet" href="styles/calculator.css">
-    <script src="scripts/third_party/jquery.js" defer></script>
-    <script src="scripts/third_party/katex.js" defer></script>
-    <script type="module" src="scripts/calculator.mjs" defer></script>
+    <link rel="canonical" href="https://calcultor.github.io/">
+    <link rel="license" href="https://www.gnu.org/licenses/agpl-3.0.html">
   </head>
   <body>
-    <form id="calculator-form">
-      <input id="input-field" autocomplete="off">
-      <button id="submit-button" title="compute input"></button>
-    </form>
-    <section id="results"></section>
-    <section id="throbber">
-      <p>
-        <img
-          src="images/Flickr-inspired_Pulsar_Throbber.gif"
-          alt="Computing..."
-          title="Flickr-inspired Pulsar Throbber by swilsonmc [CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons https://commons.wikimedia.org/wiki/File:Flickr-inspired_Pulsar_Throbber.gif"
-        >
-      </p>
-    </section>
-    <section id="timeout">
-      <p>Standard computation time exceeded...</p>
-    </section>
+    <main>
+      <section>
+        <input>
+      </section>
+      <section id="output"></section>
+    </main>
+    <script>
+      const $input = document.querySelector('input');
+      const $outputSection = document.querySelector('#output');
+
+      $input.addEventListener('change', () => {
+        let input = $input.value;
+
+        // Clears the output.
+        $outputSection.innerHTML = '';
+
+        // Converts the input to a BigInt if possible.
+        try {
+          input = BigInt(input);
+        } catch (e) {}
+
+        // Outputs the input.
+        addOutput('Input', input);
+
+        // Evaluates the input.
+        let result;
+        try {
+          result = eval(input);
+        } catch (e) {
+          // On error, exits silently.
+          console.error(e, input);
+          return;
+        }
+
+        // Outputs the result if some calculations are done.
+        if (result !== input) {
+          addOutput('Result', result);
+        }
+
+        // Exits if the result is not a BigInt.
+        try {
+          result = BigInt(result);
+        } catch (e) {
+          return;
+        }
+
+        // BigInt.
+
+        // Prime factorization.
+        if (result > 1n) {
+          const factors = factor(result);
+          const output = Object
+            .entries(factors)
+            .map(([base, exponent]) => `${base}${exponent > 1n ? `^${exponent}` : ''}`)
+            .join(' × ');
+
+          addOutput(
+            'Prime factorization',
+            output,
+            output === String(result) ? 'prime number' : '',
+          );
+        }
+      }, false);
+
+      // Prime factorization.
+      // cf. http://archive.today/2023.01.16-220421/https://yuukikonnobot.wordpress.com/2021/12/09/cpp-primality-test-prime-number-generation-factorization-elementary/
+      function factor(n) {
+        const factors = {};
+
+        while (n % 2n === 0) {
+          factors[2n] = (factors[2n] || 0n) + 1n;
+          n /= 2n;
+        }
+
+        while (n % 3n === 0) {
+          factors[3n] = (factors[3n] || 0n) + 1n;
+          n /= 3n;
+        }
+
+        for (let i = 5n; i * i <= n; i += 4n) {
+          while (n % i === 0n) {
+            factors[i] = (factors[i] || 0n) + 1n;
+            n /= i;
+          }
+
+          i += 2n;
+
+          while (n % i === 0n) {
+            factors[i] = (factors[i] || 0n) + 1n;
+            n /= i;
+          }
+        }
+
+        if (n !== 1n) {
+          factors[n] = (factors[n] || 0n) + 1n;
+        }
+
+        return factors;
+      }
+
+      // Adds the output.
+      function addOutput(label, output, note) {
+        const $output = document.createElement('output');
+        $output.append(output);
+
+        if (note) {
+          const $small = document.createElement('small');
+          $small.append(`(${note})`);
+          $output.append(' ', $small);
+        }
+
+        const $label = document.createElement('label');
+        $label.append(`${label}:`, $output);
+        $outputSection.append($label);
+      }
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        /* height: 100%; */
+        touch-action: pan-x pan-y;
+      }
+
+      body {
+        font-family: sans-serif;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 10%;
+        overflow-wrap: break-word;
+      }
+
+      input {
+        font-size: 16px;
+        width: 100%;
+      }
+
+      label, output {
+        display: block;
+      }
+
+      label {
+        margin-top: 1em;
+      }
+    </style>
   </body>
 </html>
