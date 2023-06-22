@@ -3,159 +3,100 @@
   <head>
     <meta charset="UTF-8">
     <meta name="color-scheme" content="light dark">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Calculator</title>
     <link rel="canonical" href="https://calcultor.github.io/">
     <link rel="license" href="https://www.gnu.org/licenses/agpl-3.0.html">
   </head>
   <body>
     <main>
-      <section>
-        <input>
+      <section id="input-section">
+        <input id="input">
       </section>
-      <section id="output"></section>
+      <section id="output-section">
+        <section class="individual-output-section">
+          <label class="output-label">
+            <output class="output" for="input"></output>
+          </label>
+        </section>
+      </section>
     </main>
     <script>
-      const $input = document.querySelector('input');
-      const $outputSection = document.querySelector('#output');
+      const $inputSection = document.getElementById('input-section');
+      const $input = document.getElementById('input');
 
-      $input.addEventListener('change', () => {
-        let input = $input.value;
+      const $outputSection = document.getElementById('output-section');
+      const $individualOutputSection = (
+        document.getElementsByClassName('individual-output-section')[0]
+      );
+
+      $input.addEventListener('change', function () {
+        const input = $input.value;
 
         // Clears the output.
         $outputSection.innerHTML = '';
 
-        // Converts the input to a BigInt if possible.
-        try {
-          input = BigInt(input);
-        } catch (e) {}
-
-        // Outputs the input.
+        // Outputs the interpreted input.
         addOutput('Input', input);
 
         // Evaluates the input.
-        let result;
-        try {
-          result = eval(input);
-        } catch (e) {
-          // On error, exits silently.
-          console.error(e, input);
-          return;
-        }
+        const result = evaluate(input);
 
-        // Outputs the result if some calculations are done.
-        if (result !== input) {
-          addOutput('Result', result);
-        }
-
-        // Exits if the result is not a BigInt.
-        try {
-          result = BigInt(result);
-        } catch (e) {
-          return;
-        }
-
-        // BigInt.
-
-        // Prime factorization.
-        if (result > 1n) {
-          const factors = factor(result);
-          const output = Object
-            .entries(factors)
-            .map(([base, exponent]) => `${base}${exponent > 1n ? `^${exponent}` : ''}`)
-            .join(' × ');
-
-          addOutput(
-            'Prime factorization',
-            output,
-            output === String(result) ? 'prime number' : '',
-          );
-        }
+        // Outputs the result.
+        addOutput('Result', result);
       }, false);
 
-      // Prime factorization.
-      // cf. http://archive.today/2023.01.16-220421/https://yuukikonnobot.wordpress.com/2021/12/09/cpp-primality-test-prime-number-generation-factorization-elementary/
-      function factor(n) {
-        const factors = {};
+      /**
+       * Adds an output.
+       */
+      function addOutput(label, output) {
+        const $section = $individualOutputSection.cloneNode(true);
 
-        while (n % 2n === 0n) {
-          factors[2n] = (factors[2n] || 0n) + 1n;
-          n /= 2n;
-        }
+        const $label = $section.getElementsByClassName('output-label')[0];
+        $label.insertBefore(
+          document.createTextNode(label + ':'),
+          $label.firstChild,
+        );
 
-        while (n % 3n === 0n) {
-          factors[3n] = (factors[3n] || 0n) + 1n;
-          n /= 3n;
-        }
+        const $output = $section.getElementsByClassName('output')[0];
+        $output.textContent = output;
 
-        for (let i = 5n; i * i <= n; i += 4n) {
-          while (n % i === 0n) {
-            factors[i] = (factors[i] || 0n) + 1n;
-            n /= i;
-          }
-
-          i += 2n;
-
-          while (n % i === 0n) {
-            factors[i] = (factors[i] || 0n) + 1n;
-            n /= i;
-          }
-        }
-
-        if (n !== 1n) {
-          factors[n] = (factors[n] || 0n) + 1n;
-        }
-
-        return factors;
+        $outputSection.appendChild($section);
       }
 
-      // Adds the output.
-      function addOutput(label, output, note) {
-        const $output = document.createElement('output');
-        $output.append(output);
-
-        if (note) {
-          const $small = document.createElement('small');
-          $small.append(`(${note})`);
-          $output.append(' ', $small);
-        }
-
-        const $label = document.createElement('label');
-        $label.append(`${label}:`, $output);
-        $outputSection.append($label);
+      /**
+       * Evaluates an input.
+       */
+      function evaluate(input) {
+        return input;
       }
     </script>
     <style>
       * {
+        font-family: monospace;
         margin: 0;
         padding: 0;
       }
 
-      /* cf. https://stackoverflow.com/questions/4472891/how-can-i-disable-zoom-on-a-mobile-web-page/60516252#60516252 */
-      html {
-        /* height: 100%; */
-        touch-action: pan-x pan-y;
-      }
-
       body {
-        font-family: sans-serif;
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-top: 20%;
-        overflow-wrap: break-word;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 15%;
+        max-width: 800px;
+        width: 95%;
       }
 
-      input {
-        font-size: 16px;
+      #input {
+        font-size: 1.6rem;
         width: 100%;
       }
 
-      label, output {
-        display: block;
+      .individual-output-section {
+        margin-top: 1rem;
       }
 
-      label {
-        margin-top: 1em;
+      .output {
+        display: block;
       }
     </style>
   </body>
