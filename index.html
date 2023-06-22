@@ -31,7 +31,11 @@
       );
 
       $input.addEventListener('change', function () {
-        const input = $input.value;
+        const input = $input.value.trim();
+
+        if (input === '') {
+          return;
+        }
 
         // Clears the output.
         $outputSection.innerHTML = '';
