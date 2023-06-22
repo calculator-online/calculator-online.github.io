@@ -78,25 +78,20 @@
         padding: 0;
       }
 
-      /* cf. https://stackoverflow.com/questions/4472891/how-can-i-disable-zoom-on-a-mobile-web-page/60516252#60516252 */
-      html {
-        height: 100%;
-        touch-action: pan-x pan-y;
-      }
-
       body {
         margin: 15% auto;
         max-width: 800px;
-        width: 95%;
-      }
-
-      #input {
-        padding: 0.3125rem 0.5rem;
         width: 100%;
       }
 
+      #input {
+        /* border-width: 0.125rem; */
+        padding: 0.3125rem 0.5rem;
+        width: calc(100% - 2 * (0.125rem + 0.5rem));
+      }
+
       #output-section {
-        padding-left: 0.625rem;
+        padding-left: calc(0.125rem + 0.5rem);
       }
 
       .individual-output-section {
