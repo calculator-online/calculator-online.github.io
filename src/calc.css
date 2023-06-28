@@ -1,0 +1,30 @@
+* {
+  font: 1rem monospace;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 15% auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+#input {
+  /* FIXME */
+  /* border-width: 0.125rem; */
+  padding: 0.3125rem 0.5rem;
+  width: calc(100% - 2 * (0.125rem + 0.5rem));
+}
+
+#output-section {
+  padding-left: calc(0.125rem + 0.5rem);
+}
+
+.individual-output-section {
+  margin-top: 1rem;
+}
+
+.output {
+  display: block;
+}

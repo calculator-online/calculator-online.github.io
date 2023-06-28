@@ -7,6 +7,8 @@
     <title>Calculator</title>
     <link rel="canonical" href="https://calcultor.github.io/">
     <link rel="license" href="https://www.gnu.org/licenses/agpl-3.0.html">
+    <link rel="stylesheet" href="src/calc.css">
+    <script type="module" src="src/calc.mjs"></script>
   </head>
   <body>
     <main>
@@ -21,91 +23,5 @@
         </section>
       </section>
     </main>
-    <script>
-      const $inputSection = document.getElementById('input-section');
-      const $input = document.getElementById('input');
-
-      const $outputSection = document.getElementById('output-section');
-      const $individualOutputSection = (
-        document.getElementsByClassName('individual-output-section')[0]
-      );
-
-      $input.addEventListener('change', function () {
-        const input = $input.value.trim();
-
-        if (input === '') {
-          return;
-        }
-
-        // Clears the output.
-        $outputSection.innerHTML = '';
-
-        // Outputs the interpreted input.
-        addOutput('Input', input);
-
-        // Evaluates the input.
-        const result = evaluate(input);
-
-        // Outputs the result.
-        addOutput('Result', result);
-      }, false);
-
-      /**
-       * Adds an output.
-       */
-      function addOutput(label, output) {
-        const $section = $individualOutputSection.cloneNode(true);
-
-        const $label = $section.getElementsByClassName('output-label')[0];
-        $label.insertBefore(
-          document.createTextNode(label + ':'),
-          $label.firstChild,
-        );
-
-        const $output = $section.getElementsByClassName('output')[0];
-        $output.textContent = output;
-
-        $outputSection.appendChild($section);
-      }
-
-      /**
-       * Evaluates an input.
-       */
-      function evaluate(input) {
-        return input;
-      }
-    </script>
-    <style>
-      * {
-        font: 1rem monospace;
-        margin: 0;
-        padding: 0;
-      }
-
-      body {
-        margin: 15% auto;
-        max-width: 800px;
-        width: 100%;
-      }
-
-      #input {
-        /* FIXME */
-        /* border-width: 0.125rem; */
-        padding: 0.3125rem 0.5rem;
-        width: calc(100% - 2 * (0.125rem + 0.5rem));
-      }
-
-      #output-section {
-        padding-left: calc(0.125rem + 0.5rem);
-      }
-
-      .individual-output-section {
-        margin-top: 1rem;
-      }
-
-      .output {
-        display: block;
-      }
-    </style>
   </body>
 </html>
