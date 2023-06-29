@@ -10,6 +10,7 @@ const $individualOutputSection = (
 $input.addEventListener('change', () => {
   const input = $input.value.trim();
 
+  // If the input is whitespace, does nothing.
   if (input === '') {
     return;
   }
