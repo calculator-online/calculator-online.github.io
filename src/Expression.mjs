@@ -188,6 +188,4 @@ Expression.TOKEN_TYPES = {
   ),
 };
 
-console.log(new Expression("3+4*5").evaluate());
-
 // @license-end
