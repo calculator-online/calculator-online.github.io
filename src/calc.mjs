@@ -28,7 +28,7 @@ $input.addEventListener('change', () => {
 
   // Outputs the result.
   addOutput('Result', result);
-});
+}, false);
 
 /**
  * Adds an output.
