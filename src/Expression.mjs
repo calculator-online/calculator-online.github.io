@@ -9,10 +9,64 @@ export default class Expression {
   }
 
   /**
-   * Evaluates the expression.  cf.
-   * https://en.wikipedia.org/wiki/Shunting_yard_algorithm#The_algorithm_in_detail
+   * Evaluates the expression.
    */
   evaluate() {
+    const rpn = this.toRPN();
+    const stack = [];
+
+    for (const token of rpn) {
+      switch (token.type) {
+        case 'NUMBER': {
+          stack.push(Number(token.value.replace(/[!~]/g, '-'))); // FIXME
+          break;
+        }
+        case 'OPERATOR': {
+          const right = stack.pop();
+          const left = stack.pop();
+
+          switch (token.value) {
+            case '**':
+            case '^': {
+              stack.push(left ** right);
+              break;
+            }
+            case '*': {
+              stack.push(left * right);
+              break;
+            }
+            case '/': {
+              stack.push(left / right);
+              break;
+            }
+            case '+': {
+              stack.push(left + right);
+              break;
+            }
+            case '-': {
+              stack.push(left - right);
+              break;
+            }
+            default: {
+              throw new Error(`unknown operator: ${token.value}`);
+            }
+          }
+          break;
+        }
+        default: {
+          throw new Error(`unknown token type: ${token.type}`);
+        }
+      }
+    }
+
+    return stack.pop();
+  }
+
+  /**
+   * Converts the expression to RPN.  cf.
+   * https://en.wikipedia.org/wiki/Shunting_yard_algorithm#The_algorithm_in_detail
+   */
+  toRPN() {
     // An output queue.
     const output = [];
 
@@ -22,14 +76,14 @@ export default class Expression {
     for (const token of this.tokenize()) {
       switch (token.type) {
         case 'NUMBER': {
-          output.push(token.value);
+          output.push(token);
           break;
         }
         case 'OPERATOR': {
           let top;
-          while ((top = operators.at(-1)) != null && top !== '(') {
+          while ((top = operators.at(-1)) != null && top.value !== '(') {
             const operator1 = this.constructor.OPERATORS[token.value];
-            const operator2 = this.constructor.OPERATORS[top];
+            const operator2 = this.constructor.OPERATORS[top.value];
             if (
               operator2.precedence > operator1.precedence
               || (
@@ -42,44 +96,60 @@ export default class Expression {
               break;
             }
           }
-          operators.push(token.value);
+          operators.push(token);
           break;
         }
         case 'LEFT_PARENTHESIS': {
-          operators.push(token.value);
+          operators.push(token);
           break;
         }
         case 'RIGHT_PARENTHESIS': {
           let top;
-          while ((top = operators.pop()) !== '(') {
+          while ((top = operators.pop()).value !== '(') {
             output.push(top);
           }
           break;
         }
+        default: {
+          throw new Error(`unknown token type: ${token.type}`);
+        }
       }
     }
 
-    return [...output, ...operators.reverse()].join(' ');
+    return [...output, ...operators.reverse()];
   }
 
   /**
-   * Tokenizes the expression.
+   * FIXME: Tokenizes the expression.
    */
   tokenize() {
-    // FIXME
-    return this.expression.split(/\s+/).map((token) => ({
-      type: (
-        token === '(' ? 'LEFT_PARENTHESIS'
-        : token === ')' ? 'RIGHT_PARENTHESIS'
-        : this.constructor.OPERATOR_REGEXP.test(token) ? 'OPERATOR'
-        : 'NUMBER'
-      ),
-      value: token,
-    }));
+    const tokens = [];
+    let expression = this.expression;
+    while (expression !== '') {
+      let match;
+      const type = (
+        Object
+          .entries(this.constructor.TOKEN_TYPES)
+          .find(([, regExp]) => (match = expression.match(regExp)))
+      );
+      if (type == null) {
+        throw new Error(`token not found: ${expression}`);
+      }
+      tokens.push({
+        type: type[0],
+        value: match[0],
+      });
+      expression = expression.slice(match[0].length);
+    }
+    return tokens;
   }
 }
 
 Expression.OPERATORS = {
+  '**': {
+    associativity: 'right',
+    precedence: 3,
+  },
   '^': {
     associativity: 'right',
     precedence: 3,
@@ -102,17 +172,22 @@ Expression.OPERATORS = {
   },
 };
 
-Expression.OPERATOR_REGEXP = (
-  new RegExp(
-    `^[${
-      Object
-        .keys(Expression.OPERATORS)
-        .join('')
-        .replace(/\W/g, '\\$&')
-    }]$`
-  )
-);
+Expression.TOKEN_TYPES = {
+  LEFT_PARENTHESIS: /^\(/,
+  RIGHT_PARENTHESIS: /^\)/,
+  NUMBER: /^[!~]?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
+  OPERATOR: (
+    new RegExp(
+      `^[${
+        Object
+          .keys(Expression.OPERATORS)
+          .join('')
+          .replace(/\W/g, '\\$&')
+      }]`
+    )
+  ),
+};
 
-// console.log(new Expression("2 * 3 ^ 4").evaluate());
+// console.log(new Expression("~2/(0.5e-3*2)").evaluate());
 
 // @license-end
