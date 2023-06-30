@@ -133,7 +133,7 @@ export default class Expression {
           .find(([, regExp]) => (match = expression.match(regExp)))
       );
       if (type == null) {
-        throw new Error(`token not found: ${expression}`);
+        throw new Error(`unrecognized token: ${expression}`);
       }
       tokens.push({
         type: type[0],
@@ -187,7 +187,5 @@ Expression.TOKEN_TYPES = {
     )
   ),
 };
-
-// console.log(new Expression("~2/(0.5e-3*2)").evaluate());
 
 // @license-end
