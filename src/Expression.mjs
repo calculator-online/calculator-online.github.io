@@ -97,9 +97,10 @@ export default class Expression {
   }
 
   /**
-   * FIXME: Tokenizes the expression.
+   * Tokenizes the expression.
    */
   tokenize() {
+    // FIXME
     const tokens = [];
     let expression = this.expression.replace(/\s+/g, '');
     while (expression !== '') {
