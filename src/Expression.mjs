@@ -24,33 +24,9 @@ export default class Expression {
         case 'OPERATOR': {
           const right = stack.pop();
           const left = stack.pop();
-
-          switch (token.value) {
-            case '**':
-            case '^': {
-              stack.push(left ** right);
-              break;
-            }
-            case '*': {
-              stack.push(left * right);
-              break;
-            }
-            case '/': {
-              stack.push(left / right);
-              break;
-            }
-            case '+': {
-              stack.push(left + right);
-              break;
-            }
-            case '-': {
-              stack.push(left - right);
-              break;
-            }
-            default: {
-              throw new Error(`unknown operator: ${token.value}`);
-            }
-          }
+          stack.push(
+            this.constructor.OPERATORS[token.value].function(left, right)
+          );
           break;
         }
         default: {
@@ -148,26 +124,32 @@ export default class Expression {
 Expression.OPERATORS = {
   '**': {
     associativity: 'right',
+    function: (x, y) => x ** y,
     precedence: 3,
   },
   '^': {
     associativity: 'right',
+    function: (x, y) => x ** y,
     precedence: 3,
   },
   '*': {
     associativity: 'left',
+    function: (x, y) => x * y,
     precedence: 2,
   },
   '/': {
     associativity: 'left',
+    function: (x, y) => x / y,
     precedence: 2,
   },
   '+': {
     associativity: 'left',
+    function: (x, y) => x + y,
     precedence: 1,
   },
   '-': {
     associativity: 'left',
+    function: (x, y) => x - y,
     precedence: 1,
   },
 };
