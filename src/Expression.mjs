@@ -51,7 +51,7 @@ export default class Expression {
         }
         case 'RIGHT_PARENTHESIS': {
           let top;
-          while ((top = stack.pop()) !== '(') {
+          while ((top = operators.pop()) !== '(') {
             output.push(top);
           }
           break;
