@@ -56,9 +56,9 @@ export default class Expression {
           break;
         }
         case 'OPERATOR': {
-          const operator1 = this.constructor.OPERATORS[token.value];
           let top;
           while ((top = operators.at(-1)) != null && top.value !== '(') {
+            const operator1 = this.constructor.OPERATORS[token.value];
             const operator2 = this.constructor.OPERATORS[top.value];
             if (
               operator2.precedence > operator1.precedence
