@@ -18,7 +18,7 @@ export default class Expression {
     for (const token of rpn) {
       switch (token.type) {
         case 'NUMBER': {
-          stack.push(Number(token.value.replace(/[!~]/g, '-'))); // FIXME
+          stack.push(Number(token.value.replace(/[!_~]/g, '-'))); // FIXME
           break;
         }
         case 'OPERATOR': {
@@ -175,7 +175,7 @@ Expression.OPERATORS = {
 Expression.TOKEN_TYPES = {
   LEFT_PARENTHESIS: /^\(/,
   RIGHT_PARENTHESIS: /^\)/,
-  NUMBER: /^[!~]?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
+  NUMBER: /^[!_~]?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
   OPERATOR: (
     new RegExp(
       `^[${
