@@ -84,6 +84,7 @@ export default class Expression {
           while ((top = operators.pop()).value !== '(') {
             output.push(top);
           }
+          // FIXME
           break;
         }
         default: {
