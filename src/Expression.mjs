@@ -178,14 +178,16 @@ Expression.TOKEN_TYPES = {
   NUMBER: /^\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
   OPERATOR: (
     new RegExp(
-      `^[${
+      `^(?:${
         Object
           .keys(Expression.OPERATORS)
-          .join('')
-          .replace(/\W/g, '\\$&')
-      }]`
+          .map((x) => x.replace(/\W/g, '\\$&'))
+          .join('|')
+      })`
     )
   ),
 };
+
+console.log(new Expression("3+4*5").evaluate());
 
 // @license-end
