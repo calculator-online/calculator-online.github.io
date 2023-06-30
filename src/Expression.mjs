@@ -18,7 +18,7 @@ export default class Expression {
     for (const token of rpn) {
       switch (token.type) {
         case 'NUMBER': {
-          stack.push(Number(token.value.replaceAll('_', '-'))); // FIXME
+          stack.push(Number(token.value));
           break;
         }
         case 'OPERATOR': {
@@ -124,7 +124,7 @@ export default class Expression {
    */
   tokenize() {
     const tokens = [];
-    let expression = this.expression;
+    let expression = this.expression.replace(/\s+/g, '');
     while (expression !== '') {
       let match;
       const type = (
@@ -175,7 +175,7 @@ Expression.OPERATORS = {
 Expression.TOKEN_TYPES = {
   LEFT_PARENTHESIS: /^\(/,
   RIGHT_PARENTHESIS: /^\)/,
-  NUMBER: /^_?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
+  NUMBER: /^\d+(?:\.\d+)?(?:e[+-]?\d+)?/i, // FIXME
   OPERATOR: (
     new RegExp(
       `^[${
