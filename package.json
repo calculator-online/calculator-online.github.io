@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "antlr4": "^4.13.0"
+  }
+}

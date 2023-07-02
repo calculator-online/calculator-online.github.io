@@ -1,6 +1,9 @@
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt AGPL-3.0-or-later
 
-import Expression from './Expression.mjs';
+import antlr4 from 'antlr4';
+import ExpressionLexer from '../out/ExpressionLexer.js';
+import ExpressionParser from '../out/ExpressionParser.js';
+// import ExpressionListener from '../out/ExpressionListener.js';
 
 const $input = document.querySelector('#input');
 
@@ -24,7 +27,13 @@ $input.addEventListener('change', () => {
   addOutput('Input', input);
 
   // Evaluates the input.
-  const result = new Expression(input).evaluate();
+  const chars = new antlr4.InputStream(input);
+  const lexer = new ExpressionLexer(chars);
+  const tokens = new antlr4.CommonTokenStream(lexer);
+  const parser = new ExpressionParser(tokens);
+  parser.buildParseTrees = true;
+  const tree = parser.start();
+  const result = tree.toStringTree(parser.ruleNames); // FIXME
 
   // Outputs the result.
   addOutput('Result', result);
