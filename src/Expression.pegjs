@@ -2,21 +2,24 @@ Expression
   = Sum
 
 Sum
-  = head:Product tail:([+-] Product)* {
+  = head:Product tail:([+-] Product)*
+    {
       return tail.reduce((acc, [operator, cur]) => (
         operator === '+' ? (acc + cur) : (acc - cur)
       ), head);
     }
 
 Product
-  = head:Power tail:([*/] Power)* {
+  = head:Power tail:([*/] Power)*
+    {
       return tail.reduce((acc, [operator, cur]) => (
         operator === '*' ? (acc * cur) : (acc / cur)
       ), head);
     }
 
 Power
-  = head:(Atom ('^' / '**'))* tail:Atom {
+  = head:(Atom ('^' / '**'))* tail:Atom
+    {
       return head.reduceRight((acc, [cur]) => cur ** acc, tail);
     }
 
