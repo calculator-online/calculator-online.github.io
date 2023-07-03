@@ -10,9 +10,10 @@ const $individualOutputSection = (
 );
 
 $input.addEventListener('change', () => {
-  const input = $input.value.trim();
+  // Removes all whitespace from the input.
+  const input = $input.value.replace(/\s+/g, '');
 
-  // If the input is whitespace, does nothing.
+  // If the input is empty, does nothing.
   if (input === '') {
     return;
   }
