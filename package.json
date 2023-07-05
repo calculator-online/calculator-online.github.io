@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "build": "peggy --format umd -e Expression src/Expression.pegjs"
+  },
+  "devDependencies": {
+    "peggy": "^3.0.2"
+  }
+}

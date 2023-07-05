@@ -1,6 +1,6 @@
 // @license magnet:?xt=urn:btih:0b31508aeb0634b347b8270c7bee4d411b5d4109&dn=agpl-3.0.txt AGPL-3.0-or-later
 
-import * as Expression from './Expression.mjs';
+window.addEventListener('load', () => {
 
 const $input = document.querySelector('#input');
 
@@ -19,7 +19,7 @@ $input.addEventListener('change', () => {
   }
 
   // Clears the output.
-  $outputSection.replaceChildren();
+  $outputSection.innerHTML = '';
 
   // Outputs the interpreted input.
   addOutput('Input', input);
@@ -38,12 +38,14 @@ function addOutput(label, output) {
   const $section = $individualOutputSection.cloneNode(true);
 
   const $label = $section.querySelector('.output-label');
-  $label.prepend(`${label}:`);
+  $label.insertBefore(document.createTextNode(`${label}:`), $label.firstChild);
 
   const $output = $section.querySelector('.output');
-  $output.append(output);
+  $output.textContent = output;
 
-  $outputSection.append($section);
+  $outputSection.appendChild($section);
 }
+
+}, false);
 
 // @license-end
