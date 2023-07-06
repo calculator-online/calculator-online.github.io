@@ -4,7 +4,7 @@
 }
 
 body, #input {
-  font: 20px sans-serif;
+  font: 16px sans-serif;
 }
 
 body {
@@ -27,7 +27,7 @@ body {
 }
 
 .individual-output-section {
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .output {
