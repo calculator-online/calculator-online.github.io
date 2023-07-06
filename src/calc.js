@@ -38,7 +38,7 @@ function addOutput(label, output) {
   const $section = $individualOutputSection.cloneNode(true);
 
   const $label = $section.querySelector('.output-label');
-  $label.insertBefore(document.createTextNode(`${label}:`), $label.firstChild);
+  $label.insertBefore(document.createTextNode(label), $label.firstChild);
 
   const $output = $section.querySelector('.output');
   $output.textContent = output;
