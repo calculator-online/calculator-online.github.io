@@ -14,7 +14,6 @@ body {
 #input {
   /* FIXME */
   /* border-width: 2px; */
-  font-size: 2rem;
   margin-top: 4rem;
   width: calc(100% - 2 * 2px);
 }
