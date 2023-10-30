@@ -210,7 +210,7 @@ function peg$parse(input, options) {
       ), head);
     };
   var peg$f2 = function(head, tail) {
-      return head.reduceRight((acc, [cur]) => Math.pow(cur, acc), tail);
+      return head.reduceRight((acc, [cur]) => cur ** acc, tail);
     };
   var peg$f3 = function(power) { return -power; };
   var peg$f4 = function() { return Number(text()); };

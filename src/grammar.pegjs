@@ -20,7 +20,7 @@ Product
 Power
   = head:(Atom ('^' / '**'))* tail:Atom
     {
-      return head.reduceRight((acc, [cur]) => Math.pow(cur, acc), tail);
+      return head.reduceRight((acc, [cur]) => cur ** acc, tail);
     }
 
 Atom
