@@ -3,10 +3,10 @@
 import { parse } from './parser.mjs';
 
 window.addEventListener('load', () => {
-  const $input = document.querySelector('#input');
+  const $input = document.querySelector('.js-Calculator__input');
 
-  const $outputSection = document.querySelector('#output-section');
-  const $outputColumn = document.querySelector('.output-column');
+  const $outputContainer = document.querySelector('.js-Calculator__output-container');
+  const $outputLabel = document.querySelector('.js-Calculator__output-label');
 
   $input.addEventListener('change', () => {
     // Removes all whitespace from the input.
@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
     }
 
     // Clears the output.
-    $outputSection.replaceChildren();
+    $outputContainer.replaceChildren();
 
     // Outputs the interpreted input.
     addOutput('Input', input);
@@ -34,15 +34,13 @@ window.addEventListener('load', () => {
    * Adds an output.
    */
   function addOutput(label, output) {
-    const $column = $outputColumn.cloneNode(true);
-
-    const $label = $column.querySelector('.output-label');
+    const $label = $outputLabel.cloneNode(true);
     $label.prepend(`${label}:`);
 
-    const $output = $column.querySelector('.output');
+    const $output = $label.querySelector('.js-Calculator__output');
     $output.append(output);
 
-    $outputSection.append($column);
+    $outputContainer.append($label);
   }
 });
 

@@ -6,21 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Calculator</title>
     <link rel="canonical" href="https://calculator-online.github.io/">
-    <link rel="stylesheet" href="src/calculator.css">
-    <script type="module" src="src/calculator.mjs"></script>
+    <link rel="stylesheet" href="src/calc.css">
+    <script type="module" src="src/calc.mjs"></script>
   </head>
   <body>
-    <main>
-      <section id="input-section">
-        <input id="input" autofocus>
-      </section>
-      <section id="output-section">
-        <section class="output-column">
-          <label class="output-label">
-            <output class="output" for="input"></output>
-          </label>
-        </section>
-      </section>
-    </main>
+    <form class="Calculator">
+      <button type="submit" disabled hidden></button>
+      <input class="Calculator__input js-Calculator__input" autofocus>
+      <div class="js-Calculator__output-container">
+        <label class="Calculator__output-label js-Calculator__output-label">
+          <output class="Calculator__output js-Calculator__output"></output>
+        </label>
+      </div>
+    </form>
   </body>
 </html>
