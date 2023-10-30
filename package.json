@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "peggy --export-var Expression --format umd src/Expression.pegjs"
+    "build": "peggy --format es --output src/Expression.mjs src/Expression.peggy"
   },
   "devDependencies": {
     "peggy": "^3.0.2"
