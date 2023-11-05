@@ -3,10 +3,10 @@
 import { parse } from './parser.mjs';
 
 window.addEventListener('load', () => {
-  const $input = document.querySelector('.js-Calculator__input');
+  const $input = document.querySelector('.input');
 
-  const $outputContainer = document.querySelector('.js-Calculator__output-container');
-  const $outputLabel = document.querySelector('.js-Calculator__output-label');
+  const $outputContainer = document.querySelector('.output-container');
+  const $outputLabel = document.querySelector('.output-label');
 
   $input.addEventListener('change', () => {
     // Removes all whitespace from the input.
@@ -37,7 +37,7 @@ window.addEventListener('load', () => {
     const $label = $outputLabel.cloneNode(true);
     $label.prepend(`${label}:`);
 
-    const $output = $label.querySelector('.js-Calculator__output');
+    const $output = $label.querySelector('.output');
     $output.append(output);
 
     $outputContainer.append($label);
